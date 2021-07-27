@@ -63,4 +63,12 @@ namespace Funcs
 		result = 0.5 * (arr[mid_idx - 1] + arr[mid_idx]);
 		return 0;
 	}
+
+	// Отдельный шаблон для вычисления медианы для list 
+	template<typename Type>
+	int get_median(std::list<Type> arr, double &result)
+	{
+		std::vector<Type> vect(arr.begin(), arr.end());
+		return get_median(vect, result);
+	}
 }
