@@ -10,6 +10,8 @@ dvec FuncsTest::vect4 = { 1, 5, 8, 4, 3, 9 };
 dvec FuncsTest::vect5 = { 2 };
 dvec FuncsTest::vect6 = { 1, 2 };
 
+std::array<double, 6> FuncsTest::arr1 = { 1, 5, 8, 4, 3, 9 };
+
 void FuncsTest::test_mean_v1()
 {
 	print_test_name(__FUNCTION__);
@@ -28,6 +30,15 @@ void FuncsTest::test_mean_v2()
 	are_equal(mean, 5.25);
 }
 
+void FuncsTest::test_mean_arr1()
+{
+	print_test_name(__FUNCTION__);
+
+	double mean;
+	int status = Funcs::get_mean(arr1, mean);
+	are_equal(mean, 5.0);
+}
+
 void FuncsTest::test_std_v1()
 {
 	print_test_name(__FUNCTION__);
@@ -44,6 +55,15 @@ void FuncsTest::test_std_v2()
 	double std;
 	int status = Funcs::get_std(vect2, std);
 	are_equal(std, 2.90473750966);
+}
+
+void FuncsTest::test_std_arr1()
+{
+	print_test_name(__FUNCTION__);
+
+	double mean;
+	int status = Funcs::get_std(arr1, mean);
+	are_equal(mean, 2.76887462097);
 }
 
 void FuncsTest::test_median_v3()
@@ -71,4 +91,13 @@ void FuncsTest::test_median_v5()
 	double median;
 	int status = Funcs::get_median(vect5, median);
 	are_equal(median, 2);
+}
+
+void FuncsTest::test_median_arr1()
+{
+	print_test_name(__FUNCTION__);
+
+	double mean;
+	int status = Funcs::get_median(arr1, mean);
+	are_equal(mean, 4.5);
 }
