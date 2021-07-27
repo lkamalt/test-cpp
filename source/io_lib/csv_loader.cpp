@@ -1,6 +1,9 @@
 #include "csv_loader.h"
 
-CSVLoader::CSVLoader() : has_diff_rows_count(false) {}
+CSVLoader::CSVLoader() : 
+	has_diff_rows_count(false), 
+	delimiter(";") 
+{}
 
 void CSVLoader::set_delimiter(str delimiter_)
 {
