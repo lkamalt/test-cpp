@@ -24,5 +24,10 @@ public:
 	void set_delimiter(str delimiter);
 	// Считывание данных из csv-файла
 	void read_data(str file_name);
+
+	// Возвращает количество столбцов в файле
+	int get_columns_count();
+	// Возвращает количество строк в файле
+	int get_rows_count();
 };
 

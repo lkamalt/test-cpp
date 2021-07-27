@@ -19,7 +19,9 @@ strvec CSVLoader::split(str s)
 		s_splitted.push_back(subs);
 	}
 
-	s_splitted.push_back(s.substr(pos_start));
+	subs = s.substr(pos_start);
+	if (subs != delimiter && subs != "")
+		s_splitted.push_back(subs);
 
 	return s_splitted;
 }
@@ -58,4 +60,17 @@ void CSVLoader::read_data(str file_name)
 		}
 
 	f.close();
+}
+
+int CSVLoader::get_columns_count()
+{
+	return data.size();
+}
+
+int CSVLoader::get_rows_count()
+{
+	if (!data.empty())
+		return data[0].size();
+
+	return 0;
 }
