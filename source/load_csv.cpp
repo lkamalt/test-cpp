@@ -1,11 +1,13 @@
 #include "load_csv.h"
 
+CSVLoader::CSVLoader() : has_diff_rows_count(false) {}
+
 void CSVLoader::set_delimiter(str delimiter_)
 {
 	delimiter = delimiter_;
 }
 
-strvec CSVLoader::split(str s)
+strvec CSVLoader::get_splitted(str s)
 {
 	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
 	str subs;
@@ -28,6 +30,18 @@ strvec CSVLoader::split(str s)
 
 void CSVLoader::read_data(str file_name)
 {
+	try
+	{
+		read_data_in(file_name);
+	}
+	catch (std::exception e)
+	{
+		std::cout << e.what();
+	}
+}
+
+void CSVLoader::read_data_in(str file_name)
+{
 	std::ifstream f(file_name);
 	// Считанная строка
 	str s;
@@ -37,12 +51,14 @@ void CSVLoader::read_data(str file_name)
 	dvec vect;
 	// Пока не знаем размерность массива, куда будем записывать считанные данные
 	bool has_dim = false;
+	// Колчество столбцов на каждой итерации для проверки совпадения количества строк
+	int cols_count = 0;
 
 	if (f.is_open())
 		while (std::getline(f, s))
 		{
 			// Разбиваем строку на подстроки по разделителю
-			s_splitted = split(s);
+			s_splitted = get_splitted(s);
 			// Конвертируем массив строк в массив чисел
 			vect = vect_to_double(s_splitted);
 
@@ -50,16 +66,32 @@ void CSVLoader::read_data(str file_name)
 			// значит теперь можно установить размерность массива, хранящего считанные данные
 			if (!has_dim)
 			{
+				// Запоминаем количество столбцов для проверки количества строк в каждом столбце
+				cols_count = vect.size();
+				// Выделяем память под основную структуру
 				data.resize(vect.size());
 				has_dim = true;
 			}
-			
+
+			if (vect.size() != cols_count)
+				has_diff_rows_count = true;
+
 			// Заполнение массива считанными значениями
 			for (int i = 0; i < vect.size(); i++)
 				data[i].push_back(vect[i]);
+
+			cols_count = vect.size();
 		}
 
 	f.close();
+
+	// Запоминаем количество строк в каждой таблице
+	rows_by_col.resize(data.size());
+	for (int i = 0; i < data.size(); i++)
+		rows_by_col[i] = data[i].size();
+
+	if (has_diff_rows_count)
+		throw std::exception("Different rows count\n");
 }
 
 int CSVLoader::get_columns_count()
@@ -67,10 +99,12 @@ int CSVLoader::get_columns_count()
 	return data.size();
 }
 
-int CSVLoader::get_rows_count()
+ivec CSVLoader::get_rows_count()
 {
-	if (!data.empty())
-		return data[0].size();
+	if (!rows_by_col.empty())
+		if (!has_diff_rows_count)
+			return { rows_by_col[0] };
+		else return rows_by_col;
 
-	return 0;
+	return { 0 };
 }

@@ -12,6 +12,7 @@
 
 typedef std::string str;
 typedef std::vector<str> strvec;
+typedef std::vector<int> ivec;
 typedef std::vector<double> dvec;
 typedef std::vector<std::vector<double>> ddvec;
 
