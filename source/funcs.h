@@ -1,7 +1,4 @@
-#include "math.h"
-#include <algorithm>
-#include <vector>
-#include <numeric>
+#include "tools.h"
 
 namespace Funcs
 {
