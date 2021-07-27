@@ -41,4 +41,6 @@ public:
 	ivec get_rows_count();
 	// Возвращает заголовок таблицы
 	strvec get_header();
+	// Возвращает считанные данные
+	ddvec get_data();
 };

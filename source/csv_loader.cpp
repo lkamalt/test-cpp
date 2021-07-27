@@ -1,4 +1,4 @@
-#include "load_csv.h"
+#include "csv_loader.h"
 
 CSVLoader::CSVLoader() : has_diff_rows_count(false) {}
 
@@ -122,3 +122,9 @@ strvec CSVLoader::get_header()
 {
 	return header;
 }
+
+ddvec CSVLoader::get_data()
+{
+	return data;
+}
+
