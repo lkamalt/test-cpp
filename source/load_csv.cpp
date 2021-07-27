@@ -53,6 +53,8 @@ void CSVLoader::read_data_in(str file_name)
 	bool has_dim = false;
 	// Колчество столбцов на каждой итерации для проверки совпадения количества строк
 	int cols_count = 0;
+	// Встретили ли заголовок
+	bool has_header = false;
 
 	if (f.is_open())
 		while (std::getline(f, s))
@@ -60,7 +62,14 @@ void CSVLoader::read_data_in(str file_name)
 			// Разбиваем строку на подстроки по разделителю
 			s_splitted = get_splitted(s);
 			// Конвертируем массив строк в массив чисел
-			vect = vect_to_double(s_splitted);
+			int status = vect_to_double(s_splitted, vect);
+
+			if (status < 0 && !has_header)
+			{
+				header = s_splitted;
+				has_header = true;
+				continue;
+			}
 
 			// Когда в первый раз считали строку, узнали количество столбцов в файле
 			// значит теперь можно установить размерность массива, хранящего считанные данные
@@ -107,4 +116,9 @@ ivec CSVLoader::get_rows_count()
 		else return rows_by_col;
 
 	return { 0 };
+}
+
+strvec CSVLoader::get_header()
+{
+	return header;
 }
